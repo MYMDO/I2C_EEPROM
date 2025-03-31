@@ -35,8 +35,8 @@ WRITE EERPOM:Start + 0xA0 + 8bit Data Address + Write Data + Stop.
 #define Address_16bit    1
 
 /* EERPOM DATA ADDRESS Length Selection */
-#define Address_Lenth    Address_8bit
-//#define Address_Lenth   Address_16bit
+// #define Address_Lenth    Address_8bit
+#define Address_Lenth   Address_16bit
 
 /* Global define */
 #define SIZE             sizeof(TEXT_Buffer)
@@ -89,7 +89,8 @@ void IIC_Init(u32 bound, u16 address)
  */
 void AT24CXX_Init(void)
 {
-    IIC_Init(100000, 0xA0);
+    IIC_Init(100000, 0xA0); // 100KHz I2C clock frequency
+    Delay_Ms(10);
 }
 
 /*********************************************************************
@@ -254,8 +255,8 @@ int main(void)
     Delay_Init();
     USART_Printf_Init(115200);
     	
-    printf("SystemClk:%d\r\n", (int) SystemCoreClock);
-    printf( "ChipID:%08x\r\n", (unsigned int) DBGMCU_GetCHIPID() );
+    printf("SystemClk:%d\r\n", (int)SystemCoreClock);
+    printf( "ChipID:%08x\r\n", (unsigned int)DBGMCU_GetCHIPID() );
 
     AT24CXX_Init();
 
@@ -267,12 +268,14 @@ int main(void)
 
     printf("Start Read 24Cxx....\r\n");
     AT24CXX_Read(100, data, SIZE);
-    printf("The Data Readed Is: \r\n");
-    // printf("%s\r\n", (char *)data); // (char *)data);
-    for (int i = 0; i < SIZE; i++) {
-        printf("%02x ", data[i]);
-    }
-    printf("\r\n");
+    printf("The Data Readed Is: "); // \r\n");
+    printf("%s\r\n", data);
+
+    // printf("The Data Readed Is: \r\n");
+    // for (int i = 0; i < SIZE; i++) {
+    //     printf("%02x ", data[i]);
+    // }
+    // printf("\r\n");
 
     while(1)
         ;
